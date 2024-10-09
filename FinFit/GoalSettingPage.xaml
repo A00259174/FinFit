@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FinFit.ViewModel"
+             x:Class="FinFit.GoalSettingPage"
+             Title="Goal Setting">
+
+    <ScrollView>
+        <StackLayout Padding="20">
+            <Label Text="Create Financial Goals" FontSize="24" HorizontalOptions="Center" />
+
+            <!-- Entry for new goal -->
+            <Entry Placeholder="Your Goal" x:Name="GoalEntry" Text="{Binding NewGoal}" />
+
+            <!-- Add Goal Button -->
+            <Button Text="Add Goal" Clicked="OnAddGoalClicked" />
+
+            <!-- Display goals -->
+            <Label Text="Your Goals:" FontSize="20" Margin="0,10,0,0" />
+            <CollectionView ItemsSource="{Binding GoalsList}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,10,0,0" Padding="10" BorderColor="#ccc" CornerRadius="10" HasShadow="True">
+                            <StackLayout>
+                                <Label Text="{Binding GoalName}" FontSize="18" FontAttributes="Bold" />
+                                <Label Text="{Binding Result}" FontSize="14" TextColor="Green" />
+                                <Label Text="{Binding Plan}" FontSize="14" TextColor="Gray" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

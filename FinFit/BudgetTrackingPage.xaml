@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FinFit.ViewModel"
+             x:Class="FinFit.BudgetTrackingPage"
+             Title="Budget Tracking">
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+            <Label Text="Budget Tracking" FontSize="24" HorizontalOptions="Center" />
+
+            <!-- Loader -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" />
+
+            <!-- Income Entry -->
+            <Label Text="Income: " FontSize="18" />
+            <Entry x:Name="IncomeEntry"
+                Placeholder="Fill your income" 
+                Keyboard="Numeric" 
+                Text="{Binding Income}" />
+
+            <!-- Expense Type Picker -->
+            <Label Text="Select Expense Type:" FontSize="18" />
+            <Picker x:Name="ExpenseTypePicker">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Food</x:String>
+                        <x:String>Rent</x:String>
+                        <x:String>Car Fuel</x:String>
+                        <x:String>Outing</x:String>
+                        <x:String>Other</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <!-- Expense Amount Entry -->
+            <Label Text="Expense amount:" FontSize="18" />
+            <Entry Placeholder="Fill your expense amount" 
+                   Keyboard="Numeric" 
+                   x:Name="ExpenseAmountEntry" />
+
+            <!-- Add Expense Button -->
+            <Button Text="Add Expense" Clicked="OnAddExpenseClicked" />
+
+            <!-- Expenses ListView (Locally added expenses) -->
+            <Label Text="Expenses (Uncommitted):" FontSize="18" />
+            <ListView ItemsSource="{Binding Expenses}" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="10">
+                                <Label Text="{Binding Type}" FontSize="18" WidthRequest="100" />
+                                <Label Text="{Binding Amount}" FontSize="18" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Calculate Button -->
+            <Button Text="Calculate" Clicked="OnCalculateClicked" />
+
+            <!-- Savings Display after calculation -->
+            <Label Text="Total Expenses:" FontSize="18" />
+            <Label Text="{Binding TotalExpenses}" FontSize="18" />
+            <Label Text="Amount Saved:" FontSize="18" />
+            <Label Text="{Binding Result}" FontSize="18" />
+            <Label x:Name="MotivationalQuoteLabel" 
+                   Text="{Binding MotivationalQuote}" 
+                   FontSize="18" />
+
+            <!-- Budget History Display with Card-like Design -->
+            <Label Text="View Budget History:" FontSize="20" Margin="0,20,0,0" />
+            <CollectionView ItemsSource="{Binding BudgetHistory}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate> 
+                        <Frame Margin="0,10,0,10" Padding="10" BorderColor="#ccc" CornerRadius="10" HasShadow="True">
+                            <StackLayout Padding="10">
+                                <!-- Date and Income/Expenses Summary -->
+                                <Label Text="{Binding Date}" FontSize="14" TextColor="#888" />
+                    
+                                <!-- Horizontal Stack for Income and Total Expenses -->
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Label Text="Income:" FontSize="16" FontAttributes="Bold" />
+                                    <Label Text="{Binding Income}" FontSize="16" />
+                                    <Label Text="Total Expenses:" FontSize="16" FontAttributes="Bold" />
+                                    <Label Text="{Binding TotalExpenses}" FontSize="16" />
+                                </StackLayout>
+
+                                <!-- Expenses Breakdown -->
+                                <Label Text="Expenses:" FontSize="16" FontAttributes="Bold" />
+                                <StackLayout Spacing="5">
+                                    <CollectionView ItemsSource="{Binding Expenses}" SelectionMode="None">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Type}" FontSize="14" WidthRequest="100" />
+                                                    <Label Text="{Binding Amount}" FontSize="14" />
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </StackLayout>
+
+                                <!-- Result Display for this entry -->
+                                <Label Text="{Binding Result}" FontSize="16" FontAttributes="Bold">
+                                    <Label.TextColor>
+                                        <MultiBinding Converter="{StaticResource BudgetResultColorConverter}">
+                                            <Binding Path="Income" />
+                                            <Binding Path="TotalExpenses" />
+                                        </MultiBinding>
+                                    </Label.TextColor>
+                                </Label>
+
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+            <!-- Result Display -->
+            <Label Text="{Binding Result}" FontSize="18" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,46 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinFit.SavingChallengePage"
+             Title="Saving Challenges">
+    <StackLayout Padding="20">
+        <Label Text="Challenges" FontSize="24" Margin="0,0,0,20" />
+
+        <!-- Add the ActivityIndicator here -->
+        <ActivityIndicator x:Name="Loader" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+
+        <Button Text="Daily Nickel Challenge" Clicked="OnNickelChallengeClicked"
+                BackgroundColor="#007ACC" TextColor="White" CornerRadius="10" HeightRequest="50" />
+        
+        <!-- Input field for Nickel Challenge, initially hidden -->
+        <StackLayout x:Name="NickelInputStack" IsVisible="False" Spacing="10">
+            <Entry x:Name="NickelAmountEntry" Placeholder="Enter amount saved for Daily Nickel Challenge" Keyboard="Numeric" />
+            <Button Text="Save Nickel Challenge" Clicked="OnSaveNickelChallengeClicked" />
+        </StackLayout>
+
+        <Button Text="Holiday Challenge" Clicked="OnHolidayChallengeClicked"
+                BackgroundColor="#FF5733" TextColor="White" CornerRadius="10" HeightRequest="50"
+                Margin="0,10,0,0"/>
+
+        <!-- Input field for Holiday Challenge, initially hidden -->
+        <StackLayout x:Name="HolidayInputStack" IsVisible="False" Spacing="10">
+            <Entry x:Name="HolidayAmountEntry" Placeholder="Enter amount saved for Holiday Challenge" Keyboard="Numeric" />
+            <Button Text="Save Holiday Challenge" Clicked="OnSaveHolidayChallengeClicked" />
+        </StackLayout>
+
+        <Label Text="Your Savings" FontSize="24" Margin="0,20,0,10" />
+
+        <CollectionView ItemsSource="{Binding SavingsHistory}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,10,0,0" Padding="10" BorderColor="#ccc" CornerRadius="10" HasShadow="True">
+                        <StackLayout>
+                            <Label Text="{Binding Date}" FontSize="14" TextColor="#888" />
+                            <Label Text="{Binding ChallengeType}" FontSize="16" FontAttributes="Bold" />
+                            <Label Text="{Binding Amount, StringFormat='Saved: {0:C}'}" FontSize="16" />
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
